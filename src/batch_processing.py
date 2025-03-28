@@ -3,6 +3,9 @@ from pathlib import Path
 import argparse
 from src.preprocessing import preprocess_dataset
 from src.LCL_calculations import calculate_lcl
+from src.LFC_calculations import calculate_lfc
+from src.CCL_calculations import calculate_ccl
+from src.EL_calculations import calculate_el
 # from src.visualization import visualize_comparisons
 
 def list_netCDF_files(directory):
@@ -43,8 +46,6 @@ def process_field_campaign(data_path, limit):
     results = []
 
     for file in files:
-        print(f"Processing: {file}")
-
         # 1. Load dataset
         ds = xr.open_dataset(file)
 
@@ -53,6 +54,9 @@ def process_field_campaign(data_path, limit):
 
         # 3. Calculate all parameters 
         ds = calculate_lcl(ds)
+        ds = calculate_lfc(ds)
+        ds = calculate_ccl(ds)
+        ds = calculate_el(ds)
 
         # 4. Store results
         results.append(ds)
